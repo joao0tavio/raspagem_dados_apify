@@ -58,6 +58,6 @@ def salvar_dados(dados: list, nome_arquivo: str):
 if __name__ == "__main__":
     try:
         dados_extraidos = raspar_posts_perfil(EMPRESAS, LIMITE_POR_EMPRESA)
-        salvar_dados(dados_extraidos, "ig_posts_empresas")
+        salvar_dados(dados_extraidos, "ig_posts_perfis")
     except Exception as erro:
         print(f"Erro ao executar a raspagem: {erro}")

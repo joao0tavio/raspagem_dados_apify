@@ -46,6 +46,6 @@ def salvar_dados(dados: list, nome_arquivo: str):
 if __name__ == "__main__":
     try:
         dados = raspar_por_hashtag(HASHTAGS, POSTS_POR_HASHTAGS)
-        salvar_dados(dados, "instagram_hashtags")
+        salvar_dados(dados, "ig_posts_hashtags")
     except Exception as e:
         print(f"Erro: {e}")
