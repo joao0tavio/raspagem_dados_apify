@@ -13,18 +13,16 @@ EMPRESAS = [
     "hep.solutions"
 ]
 
-def raspar_posts_perfil(empresas: list, limite_resultados) -> list:
-    """Extrai postagens de perfis específicos do Instagram."""
+def raspar_posts_perfil() -> list:
     cliente = ApifyClient(TOKEN_APIFY)
     
-    # Configuração focada em economia: limite estrito e sem proxy residencial caro
     entradas = {
-        "username": empresas,
-        "resultsLimit": limite_resultados,
+        "username": EMPRESAS,
+        "resultsLimit": LIMITE_POR_EMPRESA,
         "skipPinnedPosts": True
     }
     
-    print(f"Iniciando raspagem de perfis: {empresas}.")
+    print("Iniciando raspagem de perfis")
     execucao = cliente.actor(ATOR_APIFY).call(run_input=entradas)
     
     
@@ -52,12 +50,12 @@ def salvar_dados(dados: list, nome_arquivo: str):
     
     df = pd.DataFrame(dados)
     df.to_excel(caminho_arquivo, index=False)
-    print(f"Sucesso! Dados salvos em: {caminho_arquivo}")
+    print(f"Dados salvos em: {caminho_arquivo}")
 
 
 if __name__ == "__main__":
     try:
-        dados_extraidos = raspar_posts_perfil(EMPRESAS, LIMITE_POR_EMPRESA)
+        dados_extraidos = raspar_posts_perfil()
         salvar_dados(dados_extraidos, "ig_posts_perfis")
     except Exception as erro:
         print(f"Erro ao executar a raspagem: {erro}")

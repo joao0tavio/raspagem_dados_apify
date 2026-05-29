@@ -13,13 +13,13 @@ EMPRESAS = [
     "https://www.linkedin.com/company/hepsolutions/"
 ]
 
-def raspar_posts_linkedin(urls_perfis: list, limite_posts: int) -> list:
+def raspar_posts_linkedin() -> list:
     cliente = ApifyClient(TOKEN_APIFY)
     
     # HarvestAPI cobra por requisição, limite estrito é vital.
     entradas = {
-        "targetUrls": urls_perfis,
-        "maxPosts": limite_posts,
+        "targetUrls": EMPRESAS,
+        "maxPosts": POSTS_POR_EMPRESA,
         "includeReposts": False,
     }
     
@@ -45,7 +45,7 @@ def salvar_dados(dados: list, nome_arquivo: str):
 
 if __name__ == "__main__":
     try:
-        dados = raspar_posts_linkedin(EMPRESAS, POSTS_POR_EMPRESA)
+        dados = raspar_posts_linkedin()
         salvar_dados(dados, "linkedin_posts")
     except Exception as e:
         print(f"Erro: {e}")

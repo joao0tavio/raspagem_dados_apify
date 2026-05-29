@@ -6,27 +6,21 @@ from apify_client import ApifyClient
 load_dotenv()
 
 TOKEN_APIFY = os.getenv("APIFY_API_TOKEN")
-ATOR_APIFY = "harvestapi/linkedin-profile-search"
-QUANTIDADE_POR_EMPRESA = 3
-TERMOS = [
-    "Gerente",
-    "Consultor",
-]
-EMPRESAS = [
-    "https://www.linkedin.com/company/hepsolutions/",
+ATOR_APIFY = "apify/facebook-posts-scraper"
+POSTS_POR_PAGINA = 5
+PAGINAS = [
+    "https://www.facebook.com/Apple",
 ]
 
-def buscar_pessoas_linkedin() -> list:
+def raspar_posts_facebook() -> list:
     cliente = ApifyClient(TOKEN_APIFY)
     
     entradas = {
-        "profileScraperMode": "Short",
-        "searchQueries": TERMOS,
-        "currentCompanies": EMPRESAS,
-        "maxItems": QUANTIDADE_POR_EMPRESA,
+        "startUrls": [{"url": url} for url in PAGINAS],
+        "resultsLimit": POSTS_POR_PAGINA,
     }
     
-    print("Buscando profissionais para os termos.")
+    print("Extraindo posts do Facebook.")
     execucao = cliente.actor(ATOR_APIFY).call(run_input=entradas)
     dataset_id = None
     if isinstance(execucao, dict):
@@ -44,12 +38,11 @@ def salvar_dados(dados: list, nome_arquivo: str):
     caminho_pasta = os.path.join(os.path.dirname(__file__), '..', 'dados')
     os.makedirs(caminho_pasta, exist_ok=True)
     pd.DataFrame(dados).to_excel(os.path.join(caminho_pasta, f"{nome_arquivo}.xlsx"), index=False)
-    print("Perfis do LinkedIn salvos.")
+    print("Posts do Facebook salvos.")
 
 if __name__ == "__main__":
-
     try:
-        dados = buscar_pessoas_linkedin()
-        salvar_dados(dados, "linkedin_pessoas")
+        dados = raspar_posts_facebook()
+        salvar_dados(dados, "facebook_posts")
     except Exception as e:
         print(f"Erro: {e}")

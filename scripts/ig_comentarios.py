@@ -13,12 +13,12 @@ POSTS = [
     "https://www.instagram.com/napucminas/p/DY2y0nlyyo1/",
 ]
 
-def raspar_comentarios(urls_posts: list, limite_comentarios: int) -> list:
+def raspar_comentarios() -> list:
     cliente = ApifyClient(TOKEN_APIFY)
     
     entradas = {
-        "directUrls": urls_posts,
-        "resultsLimit": limite_comentarios,
+        "directUrls": POSTS,
+        "resultsLimit": COMENTARIOS_POR_POST,
     }
     
     print("Extraindo comentários.")
@@ -45,7 +45,7 @@ def salvar_dados(dados: list, nome_arquivo: str):
 if __name__ == "__main__":
     
     try:
-        dados = raspar_comentarios(POSTS, COMENTARIOS_POR_POST)
+        dados = raspar_comentarios()
         salvar_dados(dados, "ig_comentarios")
     except Exception as e:
         print(f"Erro: {e}")

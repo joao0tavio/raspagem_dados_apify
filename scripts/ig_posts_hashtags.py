@@ -13,15 +13,15 @@ HASHTAGS = [
     "meioAmbiente"
 ]
 
-def raspar_por_hashtag(hashtags: list, limite_resultados: int) -> list:
+def raspar_por_hashtag() -> list:
     cliente = ApifyClient(TOKEN_APIFY)
     
     entradas = {
-        "hashtags": hashtags,
-        "resultsLimit": limite_resultados,
+        "hashtags": HASHTAGS,
+        "resultsLimit": POSTS_POR_HASHTAGS,
     }
     
-    print(f"Buscando pelas hashtags: {hashtags}.")
+    print("Buscando pelas hashtags.")
     execucao = cliente.actor(ATOR_APIFY).call(run_input=entradas)
     
     dataset_id = None
@@ -45,7 +45,7 @@ def salvar_dados(dados: list, nome_arquivo: str):
 
 if __name__ == "__main__":
     try:
-        dados = raspar_por_hashtag(HASHTAGS, POSTS_POR_HASHTAGS)
+        dados = raspar_por_hashtag()
         salvar_dados(dados, "ig_posts_hashtags")
     except Exception as e:
         print(f"Erro: {e}")
